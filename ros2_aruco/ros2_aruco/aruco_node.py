@@ -39,6 +39,7 @@ from sensor_msgs.msg import Image
 from geometry_msgs.msg import PoseArray, Pose
 from ros2_aruco_interfaces.msg import ArucoMarkers
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType
+from visualization_msgs.msg import Marker
 
 
 class ArucoNode(rclpy.node.Node):
@@ -66,7 +67,7 @@ class ArucoNode(rclpy.node.Node):
 
         self.declare_parameter(
             name="image_topic",
-            value="/camera/image_raw",
+            value="/camera/image",
             descriptor=ParameterDescriptor(
                 type=ParameterType.PARAMETER_STRING,
                 description="Image topic to subscribe to.",
@@ -145,8 +146,8 @@ class ArucoNode(rclpy.node.Node):
         self.intrinsic_mat = None
         self.distortion = None
 
-        self.aruco_dictionary = cv2.aruco.Dictionary_get(dictionary_id)
-        self.aruco_parameters = cv2.aruco.DetectorParameters_create()
+        self.aruco_dictionary = cv2.aruco.getPredefinedDictionary(dictionary_id)
+        self.aruco_parameters = cv2.aruco.DetectorParameters()
         self.bridge = CvBridge()
 
     def info_callback(self, info_msg):
