@@ -208,6 +208,12 @@ class ArucoNode(rclpy.node.Node):
 
             self.poses_pub.publish(pose_array)
             self.markers_pub.publish(markers)
+        else:
+            pose_array.poses = []
+            markers.poses = []
+            markers.marker_ids = []
+            self.poses_pub.publish(pose_array)
+            self.markers_pub.publish(markers)
 
 
 def main():
